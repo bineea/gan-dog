@@ -18,9 +18,15 @@ generated_images_path = './output'  # 生成图片保存路径
 os.makedirs(generated_images_path, exist_ok=True)
 
 # 使用ImageFolder来读取数据
+# 使用transforms对图像进行转换
 transform = transforms.Compose([
+    # 将输入的 PIL Image 或 Tensor 尺寸调整为给定的尺寸，但是本身并没有发生裁切，仍可以通过resize方法返回原来的形状。
     transforms.Resize((64, 64)),
+    # 将 PIL.Image 或 Numpy.ndarray 格式的数据转化为 Tensor 格式。
     transforms.ToTensor(),
+    # 数据标准化处理：transforms.Normalize（）：transforms.Normalize：数据标准化，即均值为0，标准差为1。
+    # 简单来说就是将数据按通道进行计算，将每一个通道的数据先计算出其方差与均值，然后再将其每一个通道内的每一个数据减去均值，再除以方差，得到归一化后的结果。
+    # 在深度学习图像处理中，标准化处理之后，可以使数据更好的响应激活函数，提高数据的表现力，减少梯度爆炸和梯度消失的出现。
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
 ])
 dataset = ImageFolder(root=data_path, transform=transform)
